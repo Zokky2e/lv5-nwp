@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
@@ -49,5 +50,19 @@ class HomeController extends Controller
 
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
+    }
+
+    public function switch($locale)
+    {
+        try {
+            if (! in_array($locale, ['en', 'hr'])) {
+                session(['language' => 'en']);
+            }
+        
+            session(['language' => $locale]);
+            return redirect()->back();
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }

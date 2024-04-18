@@ -14,7 +14,7 @@
                     
                 @if ($user->role_id === 2) 
                 <div>
-                    <a href="{{ route('tasks.create') }}" class="btn btn-primary">Add Task</a>
+                    <a href="{{ route('tasks.create') }}" class="btn btn-primary">{{__('tasks.add_task')}}</a>
                 </div>
                 @endif
                 </div>

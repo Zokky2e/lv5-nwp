@@ -29,6 +29,12 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+        
+        if ($user->role_id !== 2) {
+            return redirect()->route('home')->with('failed', 'Not Allowed.');
+        }
+
         // Validate the request data
         $validatedData = $request->validate([
             'naziv_rada' => 'required|string|max:255',
