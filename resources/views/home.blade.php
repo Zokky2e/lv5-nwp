@@ -7,7 +7,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                    <b>{{ __('Dashboard') }}</b>
+                    </div>
+                    
+                @if ($user->role_id === 2) 
+                <div>
+                    <a href="{{ route('tasks.create') }}" class="btn btn-primary">Add Task</a>
+                </div>
+                @endif
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))

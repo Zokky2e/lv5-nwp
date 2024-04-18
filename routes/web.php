@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,3 +20,5 @@ Route::get('/roles/{role}', [RoleController::class, 'show'])->name('roles.show')
 Route::put('/users/{userId}/update-role', [UserController::class, 'updateRole'])->name('updateUserRole');
 
 Route::post('/users/{user}/toggle-dropdown', [HomeController::class, 'toggleRoleDropdown'])->name('toggleRoleDropdown');
+
+Route::resource('tasks', TaskController::class);
