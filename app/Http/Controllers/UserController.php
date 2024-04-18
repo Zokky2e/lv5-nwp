@@ -18,7 +18,11 @@ class UserController extends Controller
     public function updateRole(Request $request, $userId)
     {
         try {
-            User::where('id', $userId)->update(['role_id' => intval($request->role_id)]);
+            $role_id = intval($request->role_id);
+            if ($role_id == 0) {
+                $role_id = null;
+            }
+            User::where('id', $userId)->update(['role_id' => $role_id]);
             
             return redirect()->back()->with('success', 'User role updated successfully.');
         } catch (\Exception $e) {
