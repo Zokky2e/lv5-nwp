@@ -30,4 +30,6 @@ Route::resource('tasks', TaskController::class)->middleware(LanguageMiddleware::
 
 Route::get('tasks/{id}/assign', [TaskController::class, 'assign'])->name('tasks.assign');
 
+Route::get('tasks/{id}/{userId}/accept', [TaskController::class, 'accept'])->name('tasks.accept');
+
 Route::get('home/{locale}', [HomeController::class, 'switch'])->name('home.switch')->middleware(LanguageMiddleware::class);

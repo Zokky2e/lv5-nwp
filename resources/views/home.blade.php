@@ -57,7 +57,42 @@
                             </tbody>
                         </table>
                     @endif
-
+                    @if ($user->role_id === 2)
+                    <table class="table mb-4">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Student</th>
+                                    <th>Accept</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tasks as $task)
+                                    @foreach ($task->users as $userAssigned)
+                                        <tr>
+                                            <td>
+                                                {{ $task->naziv_rada }}({{ $task->engleski_naziv_rada }})
+                                            </td>
+                                            <td>
+                                                {{ $userAssigned->name }}
+                                            </td>
+                                            <td>
+                                                @if ($userAssigned->pivot->is_accepted)
+                                                    Accepted
+                                                @else
+                                                    <a 
+                                                        href="{{ route('tasks.accept', [$task->id, $userAssigned->id]) }}"
+                                                        class="btn btn-primary">
+                                                        Accept
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                     @if ($user->role_id === 3)
                     <div class="card-title"> <b>Assigned Tasks</b> </div>
                     <hr/>

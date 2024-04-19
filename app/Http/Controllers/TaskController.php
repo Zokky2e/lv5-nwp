@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Task;
+use Illuminate\Support\Facades\DB;
+
 
 class TaskController extends Controller
 {
@@ -86,6 +88,25 @@ class TaskController extends Controller
             $user->tasks()->attach($task);
             return redirect()->back()->with('success', 'Task assigned successfully.');
         }
+    }
+
+    public function accept(string $id, string $userId) {
+        DB::table('user_task')
+            ->where('task_id', $id)
+            ->where('user_id', $userId)
+            ->update(['is_accepted' => 1]);
+
+        DB::table('user_task')
+            ->where('task_id', $id)
+            ->where('user_id', '!=', $userId)
+            ->delete();
+        
+        DB::table('user_task')
+            ->where('task_id', '!=' , $id)
+            ->where('user_id', $userId)
+            ->delete();
+
+    return redirect()->back()->with('success', 'Task accepted successfully.');
     }
 
     /**

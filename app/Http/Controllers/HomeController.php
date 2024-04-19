@@ -45,8 +45,14 @@ class HomeController extends Controller
                 ->load('role');
                 $showRoleDropdown = [];
                 return view('home', compact('user', 'nonAdminUsers', 'showRoleDropdown'));
-            }
-            else if ($user->role_id === 3) {
+            } else if ($user->role_id === 2) {
+                $tasks = Task::where('user_id', $user->id)
+                    ->with(['users' => function ($query) {
+                        $query->withPivot('is_accepted');
+                    }])
+                    ->get(['id', 'naziv_rada', 'engleski_naziv_rada', 'zadatak_rada', 'tip_studija']);
+                return view('home', compact('user', 'tasks'));
+            } else if ($user->role_id === 3) {
                 $availableTasks = Task::whereDoesntHave('users', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 })->get();
