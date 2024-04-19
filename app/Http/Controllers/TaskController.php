@@ -75,6 +75,19 @@ class TaskController extends Controller
         //
     }
 
+    public function assign(string $id) 
+    {
+        $user = Auth::user();
+        $task = Task::findOrFail($id);
+        if ($user->tasks->contains($task)) {
+            $user->tasks()->detach($task);
+            return redirect()->back()->with('success', 'Task removed from user.');
+        } else {
+            $user->tasks()->attach($task);
+            return redirect()->back()->with('success', 'Task assigned successfully.');
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */

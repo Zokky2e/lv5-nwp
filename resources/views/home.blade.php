@@ -13,9 +13,9 @@
                     </div>
                     
                 @if ($user->role_id === 2) 
-                <div>
-                    <a href="{{ route('tasks.create') }}" class="btn btn-primary">{{__('tasks.add_task')}}</a>
-                </div>
+                    <div>
+                        <a href="{{ route('tasks.create') }}" class="btn btn-primary">{{__('tasks.add_task')}}</a>
+                    </div>
                 @endif
                 </div>
 
@@ -25,7 +25,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <p>Role: {{ ucfirst($user->role->ime_role) }}</p>
+                    <p class="mb-4">Role: {{ ucfirst($user->role->ime_role) }}</p>
 
                     @if ($user->role_id === 1)
                         <table class="table">
@@ -51,6 +51,53 @@
                                                     <option value="3" {{ $nonAdminUser->role_id == 3 ? 'selected' : '' }}>Student</option>
                                                 </select>
                                             </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+
+                    @if ($user->role_id === 3)
+                    <div class="card-title"> <b>Assigned Tasks</b> </div>
+                    <hr/>
+                        <table class="table mb-4">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Description</th>
+                                    <th>Unassign</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($assignedTasks as $assignedTask)
+                                    <tr>
+                                        <td>{{ $assignedTask->naziv_rada }}({{ $assignedTask->engleski_naziv_rada }})</td>
+                                        <td>{{ $assignedTask->zadatak_rada }}</td>
+                                        <td>
+                                            <a href="{{ route('tasks.assign', $assignedTask->id) }}" class="btn btn-primary">Unassign</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    <div class="card-title"> <b>Available Tasks</b> </div>
+                        <hr/>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Description</th>
+                                    <th>Assign</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($availableTasks as $availableTask)
+                                    <tr>
+                                        <td>{{ $availableTask->naziv_rada }}({{ $availableTask->engleski_naziv_rada }})</td>
+                                        <td>{{ $availableTask->zadatak_rada }}</td>
+                                        <td>
+                                            <a href="{{ route('tasks.assign', $availableTask->id) }}" class="btn btn-primary">Assign</a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
+use App\Models\Task;
 use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
@@ -42,14 +43,23 @@ class HomeController extends Controller
                     })
                 ->get()
                 ->load('role');
+                $showRoleDropdown = [];
+                return view('home', compact('user', 'nonAdminUsers', 'showRoleDropdown'));
             }
-
-            $showRoleDropdown = [];
-            return view('home', compact('user', 'nonAdminUsers', 'showRoleDropdown'));
+            else if ($user->role_id === 3) {
+                $availableTasks = Task::whereDoesntHave('users', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })->get();
+                $assignedTasks = Task::whereHas('users', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })->get();
+                return view('home', compact('user', 'availableTasks', 'assignedTasks'));
+            }
+            return view('home', compact('user'));
         }
-
-        // Redirect to login if user is not authenticated
-        return redirect()->route('login');
+        else {
+            return redirect()->route('login');
+        }
     }
 
     public function switch($locale)

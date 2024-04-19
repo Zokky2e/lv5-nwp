@@ -28,5 +28,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}']], f
 });
 Route::resource('tasks', TaskController::class)->middleware(LanguageMiddleware::class);
 
+Route::get('tasks/{id}/assign', [TaskController::class, 'assign'])->name('tasks.assign');
 
 Route::get('home/{locale}', [HomeController::class, 'switch'])->name('home.switch')->middleware(LanguageMiddleware::class);
